@@ -1,0 +1,53 @@
+
+language: cpp
+
+# sudo: true
+
+depth: 5
+
+compiler:
+- clang
+- gcc
+
+os:
+- osx
+- linux
+
+env:
+  global: 
+    - BOOST_VERSION="1.59.0"
+    - BOOST_ROOT="${TRAVIS_BUILD_DIR}/vendor/boost"
+
+cache:
+  directories:
+    - vendor
+
+before_install:
+- ./install.deps.sh
+
+script: 
+- if [ "${TRAVIS_OS_NAME}" == "linux" ] && [ "${CC}" == "clang" ]; then export CC="clang-3.6" ; export CXX="clang++-3.6" ; echo "Rexported clang" ; fi
+- |
+  echo "Configuration info:"
+  echo "BOOST_ROOT=${BOOST_ROOT}"
+  cmake --version
+  $CC --version
+  $CXX --version
+  qmake --version
+
+- mkdir build; cd build
+- cmake -DBOOST_ROOT:path=${BOOST_ROOT} ..
+- make -j4 
+
+addons:
+  apt:
+    sources: 
+    - george-edison55-precise-backports
+    - ubuntu-toolchain-r-test
+    - llvm-toolchain-precise-3.6
+    - ubuntu-sdk-team
+    packages:
+    - cmake
+    - cmake-data
+    - clang-3.6
+    - qt5-default
