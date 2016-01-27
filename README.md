@@ -8,6 +8,7 @@ This repository contains CI configurations for [Travis CI](http://travis-ci.org/
 
 * CMake 3.1+
 * Qt 5.+
+* Boost 1.59.0 (it's unfortunately installed by hand then put into `vendor/boost` and used)
 * clang-3.6 and gcc
 
 
