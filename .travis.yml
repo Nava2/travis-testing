@@ -135,13 +135,12 @@ script:
   qmake --version
 
 - gem install libv8 -v 4.5.95.5
-- find `gem env gemdir` -name libv8*
+- export V8_DIR=$(dirname $(find $(gem env gemdir) -name v8.h | grep include | uniq | tail -n 1))
 
 - mkdir build; cd build
 
 - |
-  cmake -DBOOST_ROOT:path=${BOOST_ROOT} \
-        -DCMAKE_BUILD_TYPE=CMAKE_BUILD_TYPE \
+  cmake -DCMAKE_BUILD_TYPE=CMAKE_BUILD_TYPE \
         ..
 
 - make -j4 

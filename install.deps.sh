@@ -35,12 +35,6 @@ install_os_deps() {
 
             brew unlink cmake
             brew install cmake 
-            # brew unlink boost 
-            # brew install qt5 cmake boost
-            # brew link qt5 --force
-
-            export BOOST_ROOT="/usr/local/"
-
         ;;
 
         linux) 
@@ -55,34 +49,6 @@ install_os_deps() {
                     export CXX="${COMPILER}" ; 
                 ;;
             esac
-            
-            # if [ ! -d vendor/src ]; then mkdir vendor/ ; mkdir vendor/src; fi
-            # cd vendor/src
-
-            # local b_underscore=`echo ${BOOST_VERSION} | sed 's/\./_/g'`
-            # local b_url="http://downloads.sourceforge.net/project/boost/boost/${BOOST_VERSION}/boost_${b_underscore}.tar.bz2"
-            # local b_archive="boost_${b_underscore}.tar.bz2"
-            # if [ ! -f "./${b_archive}" ]; then 
-            #     echo "Downloading Boost ${BOOST_VERSION}"
-            #     wget --no-check-certificate ${b_url} -O ${b_archive}
-                
-            # fi
-             
-            # if [ ! -d "${BOOST_ROOT}" ]; then  
-            #     echo "Extracting ${b_archive} ..." 
-            #     tar xjf ${b_archive}
-
-            #     # Build it:
-            #     echo "Installing Boost ${BOOST_VERSION} ..."
-            #     cd boost_${b_underscore}
-            #     ./bootstrap.sh --prefix=${BOOST_ROOT}
-            #     ./b2 -d1 install
-
-            #     cd -
-            # else 
-            #     echo "Found cached Boost ${BOOST_VERSION} @ ${b_archive}"
-            # fi
-
         ;;
     esac
 
