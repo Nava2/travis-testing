@@ -34,7 +34,7 @@ install_os_deps() {
             fi
 
             brew unlink cmake
-            brew install cmake
+            brew install cmake v8
             # brew unlink boost 
             # brew install qt5 cmake boost
             # brew link qt5 --force

@@ -25,7 +25,8 @@ matrix:
           packages:
           - clang-3.7
           - cmake
-          - cmake-data      
+          - cmake-data    
+          - libv8-dev  
 
     - os: linux
       env: QT_BASE=55 COMPILER=g++-5 CMAKE_BUILD_TYPE=Debug
@@ -39,7 +40,8 @@ matrix:
           - gcc-5
           - g++-5
           - cmake
-          - cmake-data
+          - cmake-data  
+          - libv8-dev  
 
     - os: linux
       env: QT_BASE=55 COMPILER=clang++-3.7 CMAKE_BUILD_TYPE=Release
@@ -53,7 +55,8 @@ matrix:
           packages:
           - clang-3.7
           - cmake
-          - cmake-data      
+          - cmake-data    
+          - libv8-dev      
 
     - os: linux
       env: QT_BASE=55 COMPILER=g++-5 CMAKE_BUILD_TYPE=Release
@@ -68,6 +71,7 @@ matrix:
           - g++-5
           - cmake
           - cmake-data  
+          - libv8-dev    
 
   # Mac OSX
     - os: osx
@@ -91,7 +95,8 @@ matrix:
           - gcc-4.9
           - g++-4.9
           - cmake
-          - cmake-data    
+          - cmake-data     
+          - libv8-dev   
 
     # Since gcc is not the default on OSX, this is just a "nice to have"
     - os: osx
