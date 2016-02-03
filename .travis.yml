@@ -3,30 +3,129 @@ language: cpp
 
 # sudo: true
 
-depth: 5
-
-compiler:
-- clang
-- gcc
-
-os:
-- osx
-- linux
+git:
+  depth: 5
 
 env:
   global: 
     - BOOST_VERSION="1.59.0"
     - BOOST_ROOT="${TRAVIS_BUILD_DIR}/vendor/boost"
 
-cache:
-  directories:
-    - vendor
+matrix:
+  include:      
+    - os: linux
+      env: QT_BASE=55 COMPILER=clang++-3.7 CMAKE_BUILD_TYPE=Debug
+      compiler: clang
+      addons:
+        apt:
+          sources:
+          - ubuntu-toolchain-r-test # Required for cmake
+          - llvm-toolchain-precise-3.7
+          - george-edison55-precise-backports
+          packages:
+          - clang-3.7
+          - cmake
+          - cmake-data      
 
-before_install:
+    - os: linux
+      env: QT_BASE=55 COMPILER=g++-5 CMAKE_BUILD_TYPE=Debug
+      compiler: gcc
+      addons:
+        apt:
+          sources:
+          - ubuntu-toolchain-r-test # Required for cmake
+          - george-edison55-precise-backports
+          packages:
+          - gcc-5
+          - g++-5
+          - cmake
+          - cmake-data
+
+    - os: linux
+      env: QT_BASE=55 COMPILER=clang++-3.7 CMAKE_BUILD_TYPE=Release
+      compiler: clang
+      addons:
+        apt:
+          sources:
+          - ubuntu-toolchain-r-test # Required for cmake
+          - llvm-toolchain-precise-3.7
+          - george-edison55-precise-backports
+          packages:
+          - clang-3.7
+          - cmake
+          - cmake-data      
+
+    - os: linux
+      env: QT_BASE=55 COMPILER=g++-5 CMAKE_BUILD_TYPE=Release
+      compiler: gcc
+      addons:
+        apt:
+          sources:
+          - ubuntu-toolchain-r-test # Required for cmake
+          - george-edison55-precise-backports
+          packages:
+          - gcc-5
+          - g++-5
+          - cmake
+          - cmake-data  
+
+  # Mac OSX
+    - os: osx
+      compiler: clang
+      env: CMAKE_BUILD_TYPE=Debug
+      
+    - os: osx
+      compiler: clang
+      env: CMAKE_BUILD_TYPE=Release  
+
+  # Failure targets:
+    - os: linux
+      env: QT_BASE=55 COMPILER=g++-4.9 CMAKE_BUILD_TYPE=Release
+      compiler: gcc
+      addons:
+        apt:
+          sources:
+          - ubuntu-toolchain-r-test # Required for cmake
+          - george-edison55-precise-backports
+          packages:
+          - gcc-4.9
+          - g++-4.9
+          - cmake
+          - cmake-data    
+
+    # Since gcc is not the default on OSX, this is just a "nice to have"
+    - os: osx
+      compiler: gcc
+      env: CMAKE_BUILD_TYPE=Release       
+
+  allow_failures:
+    - os: linux
+      env: QT_BASE=55 COMPILER=g++-4.9 CMAKE_BUILD_TYPE=Release
+
+    # Since gcc is not the default on OSX, this is just a "nice to have"
+    - os: osx
+      compiler: gcc         
+
+install:
 - ./install.deps.sh
 
 script: 
-- if [ "${TRAVIS_OS_NAME}" == "linux" ] && [ "${CC}" == "clang" ]; then export CC="clang-3.6" ; export CXX="clang++-3.6" ; echo "Rexported clang" ; fi
+- | # Do some Linux explicit things :(
+    if [ "${TRAVIS_OS_NAME}" == "linux" ]; then
+        case ${COMPILER} in 
+            clang*) 
+                export CC=`echo ${COMPILER} | sed 's/\+\+//g'` ; 
+                export CXX="${COMPILER}" ; 
+            ;;
+
+            g++*)
+                export CC=`echo ${COMPILER} | sed 's/\+\+/cc/g'` ; 
+                export CXX="${COMPILER}" ; 
+            ;;
+        esac
+
+        echo "Exported CC=${CC} CXX=${CXX}"
+    fi
 - |
   echo "Configuration info:"
   echo "BOOST_ROOT=${BOOST_ROOT}"
@@ -36,19 +135,15 @@ script:
   qmake --version
 
 - mkdir build; cd build
-- cmake -DBOOST_ROOT:path=${BOOST_ROOT} ..
+
+- |
+  cmake -DBOOST_ROOT:path=${BOOST_ROOT} \
+        -DCMAKE_BUILD_TYPE=CMAKE_BUILD_TYPE \
+        ..
+
 - make -j4 
 
-addons:
-  apt:
-    sources: 
-    - george-edison55-precise-backports
-    - ubuntu-toolchain-r-test
-    - llvm-toolchain-precise-3.6
-    - ubuntu-sdk-team
-    packages:
-    - cmake
-    - cmake-data
-    - clang-3.6
-    - qt5-default
-    - libv8-dev
+notifications:
+    email:
+        on_success: change
+        on_failure: change
