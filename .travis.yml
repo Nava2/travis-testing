@@ -10,7 +10,7 @@ env:
   global: 
     - BOOST_VERSION="1.59.0"
     - BOOST_ROOT=${TRAVIS_BUILD_DIR}/vendor/boost
-    - LIBV8_VERSION="5.4.95.5"
+    - LIBV8_VERSION="4.5.95.5"
 
 matrix:
   include:      
@@ -107,8 +107,11 @@ matrix:
     - os: osx
       compiler: gcc         
 
+before_install:
+- source ./install.deps.sh
+
 install:
-- ./install.deps.sh
+- install_os_deps
 
 script: 
 - | # Do some Linux explicit things :(
@@ -137,6 +140,7 @@ script:
 
 - gem install libv8 -v ${LIBV8_VERSION}
 - export V8_DIR=$(get_v8_gem_dir)
+- echo ${V8_DIR}
 
 - mkdir build; cd build
 
