@@ -34,9 +34,10 @@ install_os_deps() {
             fi
 
             brew unlink cmake
-            brew unlink boost 
-            brew install qt5 cmake boost
-            brew link qt5 --force
+            brew install cmake
+            # brew unlink boost 
+            # brew install qt5 cmake boost
+            # brew link qt5 --force
 
             export BOOST_ROOT="/usr/local/"
 

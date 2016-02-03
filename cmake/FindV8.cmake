@@ -1,56 +1,47 @@
-# - Find V8
-# Find the native V8 headers and libraries.
+# Locate V8
+# This module defines
+# V8_LIBRARY
+# V8_FOUND, if false, do not try to link to gdal
+# V8_INCLUDE_DIR, where to find the headers
 #
-#  V8_INCLUDE_DIR -  where to find V8.h, etc.
-#  V8_LIBRARIES    - List of libraries when using V8.
-#  V8_FOUND        - True if V8 found.
+# $V8_DIR is an environment variable that would
+# correspond to the ./configure --prefix=$V8_DIR
+#
+# Created by Robert Osfield (based on FindFLTK.cmake)
+# 
+# Source: http://trac.openscenegraph.org/projects/osg/browser/OpenSceneGraph/trunk/CMakeModules/FindV8.cmake
 
-GET_FILENAME_COMPONENT(module_file_path ${CMAKE_CURRENT_LIST_FILE} PATH )
+FIND_PATH(V8_INCLUDE_DIR v8.h
+    $ENV{V8_DIR}/include
+    $ENV{V8_DIR}
+    ~/Library/Frameworks
+    /Library/Frameworks
+    /usr/local/include
+    /usr/include
+    /sw/include # Fink
+    /opt/local/include # DarwinPorts
+    /opt/csw/include # Blastwave
+    /opt/include
+    /usr/freeware/include
+)
 
-IF( CMAKE_CL_64 )
-  SET( LIB "lib64" )
-ELSE( CMAKE_CL_64 )
-  SET( LIB "lib32" )
-ENDIF( CMAKE_CL_64 )
+FIND_LIBRARY(V8_LIBRARY
+    NAMES v8 libv8
+    PATHS
+    $ENV{V8_DIR}/lib
+    $ENV{V8_DIR}
+    ~/Library/Frameworks
+    /Library/Frameworks
+    /usr/local/lib
+    /usr/lib
+    /sw/lib
+    /opt/local/lib
+    /opt/csw/lib
+    /opt/lib
+    /usr/freeware/lib64
+)
 
-# Look for the header file.
-FIND_PATH( V8_INCLUDE_DIR NAMES v8.h
-           PATHS /usr/local/include
-                 $ENV{H3D_EXTERNAL_ROOT}/include  
-                 $ENV{H3D_ROOT}/../External/include  
-                 ../../External/include
-                 ${module_file_path}/../../../External/include
-           DOC "Path in which the file v8.h is located." )
-MARK_AS_ADVANCED(V8_INCLUDE_DIR)
-
-# Look for the library.
-# Does this work on UNIX systems? (LINUX)
-FIND_LIBRARY( V8_LIBRARY NAMES v8
-              PATHS $ENV{H3D_EXTERNAL_ROOT}/${LIB}
-                    $ENV{H3D_ROOT}/../External/${LIB}
-                    ../../External/${LIB}
-                    ${module_file_path}/../../../External/${LIB}
-              DOC "Path to v8 library." )
-MARK_AS_ADVANCED(V8_LIBRARY)
-
-# Copy the results to the output variables.
-IF(V8_INCLUDE_DIR AND V8_LIBRARY)
-  SET(V8_FOUND 1)
-  SET(V8_LIBRARIES ${V8_LIBRARY})
-  SET(V8_INCLUDE_DIR ${V8_INCLUDE_DIR})
-ELSE(V8_INCLUDE_DIR AND V8_LIBRARY)
-  SET(V8_FOUND 0)
-  SET(V8_LIBRARIES)
-  SET(V8_INCLUDE_DIR)
-ENDIF(V8_INCLUDE_DIR AND V8_LIBRARY)
-
-# Report the results.
-IF(NOT V8_FOUND)
-  SET(V8_DIR_MESSAGE
-    "V8 was not found. Make sure V8_LIBRARY and V8_INCLUDE_DIR are set.")
-  IF(V8_FIND_REQUIRED)
-    MESSAGE(FATAL_ERROR "${V8_DIR_MESSAGE}")
-  ELSEIF(NOT V8_FIND_QUIETLY)
-    MESSAGE(STATUS "${V8_DIR_MESSAGE}")
-  ENDIF(V8_FIND_REQUIRED)
-ENDIF(NOT V8_FOUND)
+SET(V8_FOUND "NO")
+IF(V8_LIBRARY AND V8_INCLUDE_DIR)
+    SET(V8_FOUND "YES")
+ENDIF()
