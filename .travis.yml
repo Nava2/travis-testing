@@ -9,7 +9,8 @@ git:
 env:
   global: 
     - BOOST_VERSION="1.59.0"
-    - BOOST_ROOT="${TRAVIS_BUILD_DIR}/vendor/boost"
+    - BOOST_ROOT=${TRAVIS_BUILD_DIR}/vendor/boost
+    - LIBV8_VERSION="5.4.95.5"
 
 matrix:
   include:      
@@ -73,7 +74,7 @@ matrix:
     - os: osx
       compiler: clang
       env: CMAKE_BUILD_TYPE=Debug
-      
+
     - os: osx
       compiler: clang
       env: CMAKE_BUILD_TYPE=Release  
@@ -134,8 +135,8 @@ script:
   $CXX --version
   qmake --version
 
-- gem install libv8 -v 4.5.95.5
-- export V8_DIR=$(dirname $(find $(gem env gemdir) -name v8.h | grep include | uniq | tail -n 1))
+- gem install libv8 -v ${LIBV8_VERSION}
+- export V8_DIR=$(get_v8_gem_dir)
 
 - mkdir build; cd build
 

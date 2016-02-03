@@ -29,6 +29,7 @@ FIND_LIBRARY(V8_LIBRARY
     NAMES v8 libv8
     PATHS
     $ENV{V8_DIR}/lib
+    $ENV{V8_DIR}/out
     $ENV{V8_DIR}
     ~/Library/Frameworks
     /Library/Frameworks

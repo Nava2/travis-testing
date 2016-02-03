@@ -54,9 +54,11 @@ install_os_deps() {
 
 }
 
-# install_manual_deps() {
+get_v8_gem_dir() {
     
-# }
+    echo $(dirname $(dirname $(find $(gem env gemdir) -name 'v8.h' | tail -n 1)))
+
+}
 
 install_os_deps
 
