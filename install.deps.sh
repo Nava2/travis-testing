@@ -86,7 +86,6 @@ install_os_deps() {
         ;;
     esac
 
-    gem install libv8 -v 4.5.95.5
 }
 
 # install_manual_deps() {

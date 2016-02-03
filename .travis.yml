@@ -134,9 +134,8 @@ script:
   $CXX --version
   qmake --version
 
-- bundle install
-
-- ls -R ./vendor
+- gem install libv8 -v 4.5.95.5
+- find `gem env gemdir` -name libv8*
 
 - mkdir build; cd build
 
