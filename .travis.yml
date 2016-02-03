@@ -134,6 +134,8 @@ script:
   $CXX --version
   qmake --version
 
+- bundle install
+
 - ls -R ./vendor
 
 - mkdir build; cd build
