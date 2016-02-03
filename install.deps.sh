@@ -34,7 +34,7 @@ install_os_deps() {
             fi
 
             brew unlink cmake
-            brew install cmake v8
+            brew install cmake 
             # brew unlink boost 
             # brew install qt5 cmake boost
             # brew link qt5 --force
@@ -44,10 +44,17 @@ install_os_deps() {
         ;;
 
         linux) 
-            if [ "${OS_NAME}" == "linux"] && [ "${CC}" == "clang" ]; then 
-                export CC="clang-3.6" ;
-                export CXX="clang++-3.6" ;
-            fi 
+            case ${COMPILER} in 
+                clang*) 
+                    export CC=`echo ${COMPILER} | sed 's/\+\+//g'` ; 
+                    export CXX="${COMPILER}" ; 
+                ;;
+
+                g++*)
+                    export CC=`echo ${COMPILER} | sed 's/\+\+/cc/g'` ; 
+                    export CXX="${COMPILER}" ; 
+                ;;
+            esac
             
             # if [ ! -d vendor/src ]; then mkdir vendor/ ; mkdir vendor/src; fi
             # cd vendor/src
@@ -78,6 +85,8 @@ install_os_deps() {
 
         ;;
     esac
+
+    gem install libv8 -v 4.5.95.5
 }
 
 # install_manual_deps() {
