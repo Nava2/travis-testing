@@ -51,3 +51,4 @@ addons:
     - cmake-data
     - clang-3.6
     - qt5-default
+    - libv8-dev
