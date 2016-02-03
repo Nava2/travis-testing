@@ -1,9 +1,14 @@
 
-#include <v8.h>
-#include <libplatform/libplatform.h>
+#include <include/v8.h>
+#include <include/libplatform/libplatform.h>
 #include <iostream>
 #include <thread>
 #include <chrono>
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 
 using namespace v8;
 
@@ -21,7 +26,7 @@ class ArrayBufferAllocator : public v8::ArrayBuffer::Allocator {
 int main(int argc, char* argv[]) {
   // Initialize V8.
   V8::InitializeICU();
-  V8::InitializeExternalStartupData(argv[0]);
+  //V8::InitializeExternalStartupData(argv[0]);
   Platform* platform = platform::CreateDefaultPlatform();
   V8::InitializePlatform(platform);
   V8::Initialize();
