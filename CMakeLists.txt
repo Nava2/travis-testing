@@ -28,9 +28,7 @@ set ( CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_RELEASE} -Wa
 
 find_package(V8 REQUIRED)
 
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR} /usr/local/include)
-
-list(APPEND CMAKE_LIBRARY_PATH "${Boost_LIBRARY_DIR}")
+INCLUDE_DIRECTORIES(${V8_INCLUDE_DIR} /usr/local/include)
 
 add_executable(testmain ./main.cpp)
-target_link_libraries(testmain ${Boost_LIBRARIES})
+target_link_libraries(testmain ${V8_LIBRARY})
